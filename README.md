@@ -30,13 +30,7 @@
 compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.1'
 ```
 #Code Basic setup
-####Firstly add this basic layout to get the video player. 
-####Without changing any settings. The basic video player will have theses settings.
-#####-Autoplay set to false (Disabled).
-#####-Auto Hide of control buttons on play set to true (Enabled).
-#####-Auto Fullscreen and Fullscreen set to true (Enabled).
-#####-Color tint of play and pause button set to white. (Default)
-
+### Firstly Add this to your layout
 
 ```XML
 <nz.co.delacour.exposurevideoplayer.ExposureVideoPlayer
@@ -45,7 +39,14 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.1'
     android:layout_height="match_parent" />
 ```
 
-###Then now in you layout find the view.
+### If you have not change any layout settings in the above snippet. The basic base video player will have theses settings.
+#####-Autoplay set to false (Disabled).
+#####-Auto Hide of control buttons on play set to true (Enabled).
+#####-Auto Fullscreen and Fullscreen set to false (Disabled).
+#####-Color tint of play and pause button set to white. (Default)
+
+###Then... You should be able to work it out from here. 
+####Wiki is still begin developed so if you have any issues please feel free to email me on chris@delacour.co.nz.
 
 ```Android
  public class MainActivity extends AppCompatActivity implements VideoListeners {
@@ -59,6 +60,11 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.1'
         evp = (ExposureVideoPlayer) findViewById(R.id.evp);
         evp.setSource("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
         //You can set the video source here or back in the layout xml.
+        //If your setting the video to a local file I would recommend setting the source here in the activity.
+        //To set a local file as source use, 
+        //evp.setSource("android.resource://" + getPackageName() + "/"+R.raw.<VIDEO NAME IN RAW>);
+        //When setting local do not use file extention (i.e .mp4) just use the the file name.
+        
         evp.setOnVideoListeners(this);
         //Video Listeners if you want them. Someof these are still being worked out so some of them dont work fully yet. My bad :)
         //Also if you do use the video listeners this I would highly recommend implmenting the VideoListeners to the base class. 
@@ -69,8 +75,6 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.1'
 
     }
     
-    
-
     @Override
     public void OnVideoStarted(ExposureVideoPlayer evp) {
         Log.e("Video ", "Started");
@@ -101,17 +105,16 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.1'
 
 }
 ```
-
-
 #Things to be added and/or finished in given time.
-#####-Video Listeners
-#####-Autoplay
-#####-Automatically resize, little broken at the moment.
-#####-Thumbnail view.
-#####-Batch preloading.
-#####-Ability to load next video.
-#####-Override mediaplayer buffer to sort out data saver mode.
-#####-Ability to take away seekbar and timers.
-#####-Allot more to come also.
+####-Video Listeners.
+####-setDisplayHomeAsUpEnabled toolbar action.
+####-Autoplay - Needs touching up.
+####-Automatically resize, little broken at the moment.
+####-Thumbnail view.
+####-Batch preloading.
+####-Ability to load next video.
+####-Override mediaplayer buffer to sort out data saver mode.
+####-Ability to take away seekbar and timers.
+####-Allot more to come also.
 
 
