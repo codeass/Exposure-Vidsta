@@ -1,12 +1,15 @@
-
+###Donate Here: [![Stories in Ready](https://button.flattr.com/flattr-badge-large.png)](https://flattr.com/profile/De-La-Cour)
 [![Bintray](https://api.bintray.com/packages/delacour/maven/exposurevideoplayer/images/download.svg)](https://bintray.com/delacour/maven/exposurevideoplayer/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Exposure--Video--Player-green.svg?style=true)](https://android-arsenal.com/details/1/4345)
+[![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/exposure-core)
+[![Stories in Ready](https://badge.waffle.io/UrbanChrisy/Exposure-Video-Player.png?label=ready&title=Ready)](http://waffle.io/UrbanChrisy/Exposure-Video-Player)
 
 <a href='https://bintray.com/delacour/maven/exposurevideoplayer?source=watch' alt='Get automatic notifications about new "exposurevideoplayer" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a>
 
 ####Note that this Repo is still in development. 
 ####So if you find any bugs or things that dont work the way they should please report them, 
 ####Thank you.
+
 
 # Exposure-Video-Player
 ####Custom Android video player API library. Simple and integrate with your apps quickly and efficiently.
