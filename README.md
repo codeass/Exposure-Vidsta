@@ -1,4 +1,6 @@
-<a href='https://bintray.com/delacour/maven/exposurevideoplayer/_latestVersion'><img src='https://api.bintray.com/packages/delacour/maven/exposurevideoplayer/images/download.svg'></a>
+
+[![Bintray](https://api.bintray.com/packages/delacour/maven/exposurevideoplayer/images/download.svg)](https://bintray.com/delacour/maven/exposurevideoplayer/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Exposure--Video--Player-green.svg?style=true)](https://android-arsenal.com/details/1/4345)
 
 <a href='https://bintray.com/delacour/maven/exposurevideoplayer?source=watch' alt='Get automatic notifications about new "exposurevideoplayer" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a>
 
