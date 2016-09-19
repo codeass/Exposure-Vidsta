@@ -10,7 +10,6 @@
 ####So if you find any bugs or things that dont work the way they should please report them, 
 ####Thank you.
 
-
 # Exposure-Video-Player
 ####Custom Android video player API library. Simple and integrate with your apps quickly and efficiently.
 
@@ -19,9 +18,15 @@
 <img src="https://github.com/UrbanChrisy/Exposure-Video-Player/blob/master/screenshots/screenshot_1.png" height="640px" width="360px">
 <img src="https://github.com/UrbanChrisy/Exposure-Video-Player/blob/master/screenshots/screenshot_2.png" height="640px" width="360px"> </p>
 
-
-
-
+#Whats New:
+###-Thumbnaiul View.
+###-Standalone Player - Has its own activity.
+###-Fullscreen Button working.
+###-Fullscreen Button is now able to be disabled.
+###-Autoplay working.
+###-Removed auto hide controls on play. Will add in again at later date.
+###-Video listners working. Also they have changed from implementing them all, so implementing select listeners you choose.
+###-Layout created, destryoed, paused or resumed listeners are now working.
 
 #Feature List:
 ####-UI is very similar to what youtube uses as such.
@@ -32,9 +37,9 @@
 #Module Dependency
 ####Add the following dependancy to your module build.gradle file, then your set to go.
 ```Gradle
-compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.1'
+compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.2'
 ```
-#Code Basic setup
+#Video Player Setup
 ### Firstly Add this to your layout
 
 ```XML
@@ -46,14 +51,13 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.1'
 
 ### If you have not change any layout settings in the above snippet. The basic base video player will have theses settings.
 #####-Autoplay set to false (Disabled).
-#####-Auto Hide of control buttons on play set to true (Enabled).
 #####-Auto Fullscreen and Fullscreen set to false (Disabled).
 #####-Color tint of play and pause button set to white. (Default)
 
 ###Then... You should be able to work it out from here. 
 ####Wiki is still begin developed so if you have any issues please feel free to email me on chris@delacour.co.nz.
 
-```Android
+```Java
  public class MainActivity extends AppCompatActivity implements VideoListeners {
 
     ExposureVideoPlayer evp;
@@ -63,59 +67,60 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.1'
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         evp = (ExposureVideoPlayer) findViewById(R.id.evp);
-        evp.setSource("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
-        //You can set the video source here or back in the layout xml.
-        //If your setting the video to a local file I would recommend setting the source here in the activity.
-        //To set a local file as source use, 
-        //evp.setSource("android.resource://" + getPackageName() + "/"+R.raw.<VIDEO NAME IN RAW>);
-        //When setting local do not use file extention (i.e .mp4) just use the the file name.
-        
+        evp.init(this);//You must include a Activity here, for the video player will not function correctly.
+        evp.setVideoSource(videoSource);
+        // Set video source from raw source, evp.setVideoSource("android.resource://" + getPackageName() + "/"+R.raw.big_buck_bunny);
         evp.setOnVideoListeners(this);
-        //Video Listeners if you want them. Someof these are still being worked out so some of them dont work fully yet. My bad :)
-        //Also if you do use the video listeners this I would highly recommend implmenting the VideoListeners to the base class. 
-        //Just makes it a whole allot easier
-
-        //If you haven't set autoplay to true you can with start the video with evp.start();
-        //Or you can wait for the user to click the play button on screen.
-
+        // If you haven't set autoplay to true you can with start the video with one of these,
+        // evp.start();
+        // Or you can wait for the user to click the play button on screen.
+        ...
     }
-    
-    @Override
-    public void OnVideoStarted(ExposureVideoPlayer evp) {
-        Log.e("Video ", "Started");
-
-    }
-
-    @Override
-    public void OnVideoPaused(ExposureVideoPlayer evp) {
-        Log.e("Video ", "Paused");
-
-    }
-
-    @Override
-    public void OnVideoStopped(ExposureVideoPlayer evp) {
-        Log.e("Video ", "Stopped");
-
-    }
-
-    @Override
-    public void OnVideoFinished(ExposureVideoPlayer evp) {
-        Log.e("Video ", "Completed");
-    }
-
-    @Override
-    public void OnVideoBuffering(ExposureVideoPlayer exposureVideoPlayer) {
-        Log.e("Video ", "Buffering");
-    }
-
 }
 ```
+###NOTE: In your code you must include the init(<YOUR ACTIVITY>) method, for the video player will not function correctly.
+
+#Thumbnail View Setup
+```XML
+    <nz.co.delacour.exposurevideoplayer.ExposureThumbnailView
+        android:id="@+id/etv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+```
+
+###And again same as above, bit slightly different.
+
+```Java
+    ExposureThumbnailView etv;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            //Thumbnail view uses the first frame(first milisecond) of video given as source.
+            etv = (ExposureThumbnailView) findViewById(R.id.etv);
+            etv.setVideoSource("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+            etv.setAutoPlay(true);//Set your video settings if you need them. They carry over the the standalone player.
+            etv.setFullScreen(false);
+            etv.disableStandalonePlayer(true);//Disables standalone player.
+            etv.setOnThumbnailClickListener(new OnThumbnailClickListener() {
+                @Override
+                public void onClick() {
+                    Log.e("Thumbnail: ", "Clicked");
+                    //Standlone activity starts here.
+                    //Add your own on clicks methods here.
+                    //Start activity with video player etc.
+                }
+            });
+        }
+        ...
+```
+
+#More detailed Wiki is coming in the next few days. Just need to find some time.
+
+
+
 #Things to be added and/or finished in given time.
-####-Video Listeners.
 ####-setDisplayHomeAsUpEnabled toolbar action.
-####-Autoplay - Needs touching up.
 ####-Automatically resize, little broken at the moment.
-####-Thumbnail view.
 ####-Batch preloading.
 ####-Ability to load next video.
 ####-Override mediaplayer buffer to sort out data saver mode.
