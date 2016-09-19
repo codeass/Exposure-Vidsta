@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="nz.co.delacour.exposurevideoplayer">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="nz.co.delacour.exposurevideoplayer">
 
-    <application />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application>
+        <activity
+            android:name="nz.co.delacour.exposurevideoplayer.ExposureStandalonePlayer"
+            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+
 </manifest>

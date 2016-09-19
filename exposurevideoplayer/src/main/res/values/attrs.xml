@@ -9,14 +9,18 @@
         <attr name="nextVideoDrawable" format="reference" />
         <attr name="previousVideoDrawable" format="reference" />
         <attr name="buttonTintColor" format="color" />
-
         <attr name="autoPlay" format="boolean" />
+        <attr name="autoLoop" format="boolean" />
         <attr name="setFullScreen" format="boolean" />
         <attr name="fullScreenButtonEnabled" format="boolean" />
         <attr name="hideControlsOnPlay" format="boolean" />
 
         <!-- <attr name="disableControls" format="boolean" />-->
 
+    </declare-styleable>
+
+    <declare-styleable name="ExposureThumbnailView">
+        <attr name="allowCache" format="boolean" />
     </declare-styleable>
 
 </resources>

@@ -21,7 +21,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -50,8 +49,7 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
         SeekBar.OnSeekBarChangeListener, MediaPlayer.OnErrorListener {
 
     private TextureView textureView;
-    private MediaPlayer videoPlayer;
-    //private View vcv;
+    private MediaPlayer videoPlayer = new MediaPlayer();
     private View controlPlayPause;
     private View controlSeekBar;
     private View videoLoadingView;
@@ -70,30 +68,40 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
     private Drawable enterFullScreenDrawable;
     private Drawable exitFullScreenDrawable;
 
-    private VideoListeners videoListener;
+    private VideoStateListeners.OnVideoStartedListener onVideoStarted;
+    private VideoStateListeners.OnVideoPausedListener onVideoPaused;
+    private VideoStateListeners.OnVideoStoppedListener onVideoStopped;
+    private VideoStateListeners.OnVideoFinishedListener onVideoFinished;
+    private VideoStateListeners.OnVideoBufferingListener onVideoBuffering;
+    private VideoStateListeners.OnVideoErrorListener onVideoError;
+    private VideoStateListeners.OnVideoRestartListener onVideoRestart;
+
     private LayoutStates.OnLayoutCreated onLayoutCreated;
     private LayoutStates.OnLayoutResumed onLayoutResumed;
     private LayoutStates.OnLayoutPaused onLayoutPaused;
     private LayoutStates.OnLayoutDestroyed onLayoutDestroyed;
     private FullScreenClickListener fullscreenToggleClickListener;
+    private OnBackCalledListener onBackCalled;
 
     private Surface surface;
     private Uri videoSource;
-    //private boolean hideControlsOnPlay;
     private boolean autoPlay;
     private boolean wasPlaying;
-    private int initialHeight;
-    private int initialWidth;
+    private int initialViewHeight;
+    private int initialViewWidth;
+    private Integer initialVideoWidth;
+    private Integer initialVideoHeight;
     private int videoDuration;
     private boolean isFullScreen = false;
     private boolean isSetFullScreen;
 
-    private Handler handler;
+    private Handler handler = new Handler();
     private Configuration layoutConfig;
     private int buttonTintColor = 0;
     private Activity baseAct;
     private boolean setFullScreenButtonEnabled;
-    private int orientationBeforeFullScreen;
+    private boolean autoLoop;
+    private boolean isPrepared = false;
 
 
     public ExposureVideoPlayer(Context context) {
@@ -112,22 +120,20 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
     }
 
     private void init(Context context, AttributeSet attrs) {
+        this.isInEditMode();
         setBackgroundColor(Color.BLACK);
-
         if (attrs != null) {
             TypedArray customAttr = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ExposureVideoPlayer, 0, 0);
             try {
                 String s = customAttr.getString(R.styleable.ExposureVideoPlayer_videoSource);
                 if (s != null && !s.trim().isEmpty()) videoSource = Uri.parse(s);
-
-                //hideControlsOnPlay = customAttr.getBoolean(R.styleable.ExposureVideoPlayer_hideControlsOnPlay, true);
                 autoPlay = customAttr.getBoolean(R.styleable.ExposureVideoPlayer_autoPlay, false);
                 setFullScreenButtonEnabled = customAttr.getBoolean(R.styleable.ExposureVideoPlayer_fullScreenButtonEnabled, true);
                 isSetFullScreen = customAttr.getBoolean(R.styleable.ExposureVideoPlayer_setFullScreen, false);
                 isFullScreen = isSetFullScreen;
+                autoLoop = customAttr.getBoolean(R.styleable.ExposureVideoPlayer_autoLoop, false);
 
                 buttonTintColor = customAttr.getColor(R.styleable.ExposureVideoPlayer_buttonTintColor, ContextCompat.getColor(getContext(), R.color.colorPrimaryText));
-
                 playVideoDrawable = customAttr.getDrawable(R.styleable.ExposureVideoPlayer_playVideoDrawable);
                 pauseVideoDrawable = customAttr.getDrawable(R.styleable.ExposureVideoPlayer_pauseVideoDrawable);
                 retryVideoDrawable = customAttr.getDrawable(R.styleable.ExposureVideoPlayer_retryVideoDrawable);
@@ -137,6 +143,7 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
                 customAttr.recycle();
             }
         } else {
+            autoLoop = false;
             autoPlay = false;
             isSetFullScreen = false;
             setFullScreenButtonEnabled = true;
@@ -161,11 +168,11 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
     }
 
     public void start() {
-        if (videoPlayer == null) return;
+        if (videoPlayer == null || !isPrepared) return;
         videoPlayer.start();
         imgBtnPlayPause.setImageDrawable(pauseVideoDrawable);
         handler.post(seekBarProgress);
-        videoListener.OnVideoStarted(this);
+        if (onVideoStarted != null) onVideoStarted.OnVideoStarted(this);
     }
 
     public void pause() {
@@ -174,35 +181,34 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
             imgBtnPlayPause.setImageDrawable(playVideoDrawable);
             handler.removeCallbacks(seekBarProgress);
         }
-        videoListener.OnVideoPaused(this);
+        if (onVideoPaused != null) onVideoPaused.OnVideoPaused(this);
     }
 
     public void stop() {
         videoPlayer.stop();
         imgBtnPlayPause.setImageDrawable(playVideoDrawable);
         handler.removeCallbacks(seekBarProgress);
-        videoListener.OnVideoStopped(this);
+        if (onVideoStopped != null) onVideoStopped.OnVideoStopped(this);
     }
 
     public void restart() {
         videoPlayer.stop();
         if (autoPlay) {
-            videoPlayer.start();
-            imgBtnPlayPause.setImageDrawable(pauseVideoDrawable);
+            start();
         } else {
             imgBtnPlayPause.setImageDrawable(playVideoDrawable);
-
         }
         handler.removeCallbacks(seekBarProgress);
-        videoListener.OnVideoRestart(this);
+        if (onVideoRestart != null) onVideoRestart.OnVideoRestart(this);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        handler = new Handler();
-        videoPlayer = new MediaPlayer();
         videoPlayer.setOnPreparedListener(this);
+        videoPlayer.setOnBufferingUpdateListener(this);
+        videoPlayer.setOnCompletionListener(this);
+        videoPlayer.setOnErrorListener(this);
         videoPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         textureView = new TextureView(getContext());
         addView(textureView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -213,11 +219,11 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
         rl.setOnClickListener(this);
 
         LayoutInflater li = LayoutInflater.from(getContext());
-        videoLoadingView = li.inflate(R.layout.video_loading_view, this, false);
+        videoLoadingView = li.inflate(R.layout.layout_video_loading_view, this, false);
         addView(videoLoadingView);
 
-        controlPlayPause = li.inflate(R.layout.video_img_button_play_pause, this, false);
-        controlSeekBar = li.inflate(R.layout.video_seek_bar, this, false);
+        controlPlayPause = li.inflate(R.layout.layout_video_img_button_play_pause, this, false);
+        controlSeekBar = li.inflate(R.layout.layout_video_seek_bar, this, false);
         FrameLayout.LayoutParams lp1 = (FrameLayout.LayoutParams) controlPlayPause.getLayoutParams();
         FrameLayout.LayoutParams lp2 = (FrameLayout.LayoutParams) controlSeekBar.getLayoutParams();
 
@@ -246,30 +252,16 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
     }
 
     @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig == null) return;
-        switch (newConfig.orientation) {
-            case Configuration.ORIENTATION_LANDSCAPE:
-                Log.e("LANDSCAPE", "LANDSCAPE");
-                break;
-            case Configuration.ORIENTATION_PORTRAIT:
-                Log.e("PORTRAIT", "PORTRAIT");
-                break;
-        }
-    }
-
-
-    @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-        initialWidth = width;
-        initialHeight = height;
+        initialViewWidth = width;
+        initialViewHeight = height;
         surface = new Surface(surfaceTexture);
         videoPlayer.setSurface(surface);
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int width, int height) {
+        if ((videoPlayer.getVideoWidth() == 0) || (videoPlayer.getVideoHeight() == 0)) return;
         adjustView(width, height, videoPlayer.getVideoWidth(), videoPlayer.getVideoHeight());
     }
 
@@ -284,29 +276,42 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
 
     @Override
     public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-        videoListener.OnVideoBuffering(this, i);
+        if (onVideoBuffering != null) onVideoBuffering.OnVideoBuffering(this, i);
     }
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        videoListener.OnVideoFinished(this);
+        if (onVideoFinished != null) onVideoFinished.OnVideoFinished(this);
         handler.removeCallbacks(seekBarProgress);
+        if (!autoLoop) onBackCalled();
+    }
+
+    public void setOnBackCalled(OnBackCalledListener onBackCalled) {
+        this.onBackCalled = onBackCalled;
+    }
+
+    public void onBackCalled() {
+        if (onBackCalled != null) onBackCalled.onBackCalled();
+        onLayoutDestroyed();
     }
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
+        isPrepared = true;
         videoDuration = mediaPlayer.getDuration();
         seekBarDuration.setProgress(0);
         seekBarDuration.setMax(videoDuration);
-        tvPosition.setText(ExposureVideoPlayerUtil.getTimeString(0, false));
-        tvDuration.setText(ExposureVideoPlayerUtil.getTimeString(videoDuration, true));
+        tvPosition.setText(ExposureUtil.getTimeString(0, false));
+        tvDuration.setText(ExposureUtil.getTimeString(videoDuration, true));
         proViewVideoLoading.stop();
         proViewVideoLoading.setVisibility(INVISIBLE);
         removeView(videoLoadingView);
-        videoPlayer.setOnBufferingUpdateListener(this);
-        videoPlayer.setOnCompletionListener(this);
-        videoPlayer.setOnErrorListener(this);
         videoPlayer.setOnVideoSizeChangedListener(this);
+
+        if (initialVideoWidth == null && initialVideoHeight == null) {
+            initialVideoWidth = videoPlayer.getVideoWidth();
+            initialVideoHeight = videoPlayer.getVideoHeight();
+        }
 
         if (autoPlay) {
             start();
@@ -320,36 +325,36 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
 
     @Override
     public void onVideoSizeChanged(MediaPlayer mediaPlayer, int width, int height) {
-        adjustView(initialWidth, initialHeight, width, height);
+        adjustView(initialViewWidth, initialViewHeight, width, height);
     }
 
-    private void adjustView(int viewWidth, int viewHeight, int videoWidth, int videoHeight) {
-        final double aspectRatio = (double) videoHeight / videoWidth;
-        int newWidth, newHeight;
+    private void adjustView(int width1, int height1, int width2, int height2) {
+        final double r = (double) height2 / width2;
+        int nw, nH;
 
-        if (viewHeight > (int) (viewWidth * aspectRatio)) {
-            newWidth = viewWidth;
-            newHeight = (int) (viewWidth * aspectRatio);
+        if (height1 > (int) (width1 * r)) {
+            nw = width1;
+            nH = (int) (width1 * r);
         } else {
-            newWidth = (int) (viewHeight / aspectRatio);
-            newHeight = viewHeight;
+            nw = (int) (height1 / r);
+            nH = height1;
         }
 
-        final int xoff = (viewWidth - newWidth) / 2;
-        final int yoff = (viewHeight - newHeight) / 2;
+        final int moveX = (width1 - nw) / 2;
+        final int moveY = (height1 - nH) / 2;
 
-        final Matrix txform = new Matrix();
-        textureView.getTransform(txform);
-        txform.setScale((float) newWidth / viewWidth, (float) newHeight / viewHeight);
-        txform.postTranslate(xoff, yoff);
-        textureView.setTransform(txform);
+        final Matrix textureMatrix = new Matrix();
+        textureView.getTransform(textureMatrix);
+        textureMatrix.setScale((float) nw / width1, (float) nH / height1);
+        textureMatrix.postTranslate(moveX, moveY);
+        textureView.setTransform(textureMatrix);
     }
 
-    public void setSource(String str) {
-        setSource(Uri.parse(str));
+    public void setVideoSource(String str) {
+        setVideoSource(Uri.parse(str));
     }
 
-    public void setSource(Uri uri) {
+    public void setVideoSource(Uri uri) {
         videoSource = uri;
         setUpVideoPlayer();
     }
@@ -372,6 +377,8 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         }
 
+        setAutoLoop(autoLoop);
+
         if (buttonTintColor != ContextCompat.getColor(getContext(), R.color.colorPrimaryText)) {
             ColorDrawable dr = new ColorDrawable(buttonTintColor);
             playVideoDrawable.setColorFilter(dr.getColor(), PorterDuff.Mode.MULTIPLY);
@@ -381,6 +388,12 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
             imgBtnPlayPause.setImageDrawable(playVideoDrawable);
         }
     }
+
+    public void setAutoLoop(boolean autoLoop) {
+        this.autoLoop = autoLoop;
+        if (autoLoop) videoPlayer.setLooping(true);
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -409,10 +422,6 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
 
     public boolean controlsShowing() {
         return (controlPlayPause.getVisibility() == VISIBLE);
-    }
-
-    public void setOnVideoListeners(@NonNull VideoListeners callback) {
-        videoListener = callback;
     }
 
     public void toggleControls() {
@@ -462,22 +471,21 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
     private void exitFullScreen() {
         this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
         imgBtnFullScreenToggle.setImageDrawable(enterFullScreenDrawable);
-        if (baseAct != null)
-            if (orientationBeforeFullScreen == Configuration.ORIENTATION_PORTRAIT)
-                baseAct.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            else baseAct.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        if (baseAct != null) {
+            baseAct.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
     }
 
     public void setFullScreen() {
         imgBtnFullScreenToggle.setImageDrawable(exitFullScreenDrawable);
-        orientationBeforeFullScreen = getResources().getConfiguration().orientation;
+        setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         if (baseAct != null) {
-            baseAct.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            //baseAct.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             baseAct.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
             Toast.makeText(getContext(), "FullScreen will not work properly, as no Activity has been initialized.", Toast.LENGTH_LONG).show();
-            this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         }
+
         if (isSetFullScreen) {
             imgBtnFullScreenToggle.setVisibility(GONE);
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) tvDuration.getLayoutParams();
@@ -500,7 +508,7 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
         this.autoPlay = autoPlay;
     }
 
-    public boolean autoPlayEnabled() {
+    public boolean isAutoPlayEnabled() {
         return autoPlay;
     }
 
@@ -533,8 +541,8 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
             int videoPos = videoPlayer.getCurrentPosition();
             int videoLength = videoPlayer.getDuration();
 
-            tvPosition.setText(ExposureVideoPlayerUtil.getTimeString(videoPos, false));
-            tvDuration.setText(ExposureVideoPlayerUtil.getTimeString((videoLength - videoPos), true));
+            tvPosition.setText(ExposureUtil.getTimeString(videoPos, false));
+            tvDuration.setText(ExposureUtil.getTimeString((videoLength - videoPos), true));
             seekBarDuration.setProgress(videoPos);
             seekBarDuration.setMax(videoLength);
             handler.postDelayed(this, 100);
@@ -593,23 +601,22 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
             this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
             this.getResources().getConfiguration().orientation = Configuration.ORIENTATION_LANDSCAPE;
         }
-
-
     }
 
     public void onLayoutPaused() {
         if (onLayoutPaused != null) onLayoutPaused.onPaused();
+        this.pause();
     }
 
     public void onLayoutDestroyed() {
         if (onLayoutDestroyed != null) onLayoutDestroyed.onDestroy();
-        videoPlayer.stop();
-        videoPlayer.release();
+        this.stop();
     }
 
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int ii) {
-        Log.e("MEDIA PLAYER ERROR", "i" + i + " ,  " + ii);
+        if (i == -38) return false;
+        if (onVideoError != null) onVideoError.OnVideoError(i, ii);
         return false;
     }
 
@@ -627,5 +634,33 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
         if (fullscreenToggleClickListener != null)
             fullscreenToggleClickListener.onToggleClick(isFullscreen);
         setFullScreenToggle(isFullscreen);
+    }
+
+    public void setOnVideoStartedListener(VideoStateListeners.OnVideoStartedListener onVideoStarted) {
+        this.onVideoStarted = onVideoStarted;
+    }
+
+    public void setOnVideoRestartListener(VideoStateListeners.OnVideoRestartListener onVideoRestart) {
+        this.onVideoRestart = onVideoRestart;
+    }
+
+    public void setOnVideoErrorListener(VideoStateListeners.OnVideoErrorListener onVideoError) {
+        this.onVideoError = onVideoError;
+    }
+
+    public void setOnVideoBufferingListener(VideoStateListeners.OnVideoBufferingListener onVideoBuffering) {
+        this.onVideoBuffering = onVideoBuffering;
+    }
+
+    public void setOnVideoFinishedListener(VideoStateListeners.OnVideoFinishedListener onVideoFinished) {
+        this.onVideoFinished = onVideoFinished;
+    }
+
+    public void setOnVideoStoppedListener(VideoStateListeners.OnVideoStoppedListener onVideoStopped) {
+        this.onVideoStopped = onVideoStopped;
+    }
+
+    public void setOnVideoPausedListener(VideoStateListeners.OnVideoPausedListener onVideoPaused) {
+        this.onVideoPaused = onVideoPaused;
     }
 }

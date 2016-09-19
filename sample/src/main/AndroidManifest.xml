@@ -16,7 +16,6 @@
         <activity
             android:name="nz.co.delacour.exposurevideoplayersample.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

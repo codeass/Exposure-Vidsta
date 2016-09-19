@@ -3,10 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <nz.co.delacour.exposurevideoplayer.ExposureThumbnailView
-        android:id="@+id/etv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
+    <com.rey.material.widget.ProgressView
+        android:id="@+id/proViewVideoLoading"
+        android:layout_centerInParent="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
 </RelativeLayout>

@@ -9,7 +9,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.2"
     }
     buildTypes {
         release {
@@ -24,11 +24,11 @@ install {
             name 'exposurevideoplayer'
             description 'A simple to use video player api for Android.'
             inceptionYear '2016'
-            //libraryVersion '1.0.1'
+            //libraryVersion '1.0.2'
             packaging 'aar'
             groupId 'nz.co.delacour.exposure-core'
             artifactId 'exposurevideoplayer'
-            version '1.0.1'
+            version '1.0.2'
             scm {
                 connection 'https://github.com/urbanchrisy/exposure-video-player.git'
                 url 'https://github.com/urbanchrisy/exposure-video-player'
@@ -43,7 +43,7 @@ install {
     }
 }
 group = 'nz.co.delacour.exposure-core'
-version = '1.0.1'
+version = '1.0.2'
 
 bintray {
     user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
@@ -58,8 +58,8 @@ bintray {
         publicDownloadNumbers = false
         vcsUrl = 'https://github.com/urbanchrisy/exposure-video-player.git'
         version {
-            name = '1.0.1'
-            desc = 'Exposure Video Player version 1.0.1'
+            name = '1.0.2'
+            desc = 'Exposure Video Player version 1.0.2'
             vcsTag = 'https://github.com/urbanchrisy/exposure-video-player'
         }
     }
@@ -74,7 +74,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.github.rey5137:material:1.2.4'
-
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
 
 task sourcesJar(type: Jar) {
