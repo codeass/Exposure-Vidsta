@@ -114,7 +114,7 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.2'
         ...
 ```
 
-#More detailed Wiki is coming in the next few days. Just need to find some time.
+#More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Video-Player/wiki).
 
 
 
