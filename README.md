@@ -49,6 +49,9 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.2'
     android:layout_height="match_parent" />
 ```
 
+#More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Video-Player/wiki).
+
+
 ### If you have not change any layout settings in the above snippet. The basic base video player will have theses settings.
 #####-Autoplay set to false (Disabled).
 #####-Auto Fullscreen and Fullscreen set to false (Disabled).
@@ -113,10 +116,6 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.2'
         }
         ...
 ```
-
-#More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Video-Player/wiki).
-
-
 
 #Things to be added and/or finished in given time.
 ####-setDisplayHomeAsUpEnabled toolbar action.
