@@ -34,10 +34,13 @@
 ####-Allot of feature to be still implemented.
 ####-Made around the base MediaPlayer API. So it can play anything and on most devices.
 
+#Min SDK Version: SDK < 14
+
+
 #Module Dependency
 ####Add the following dependancy to your module build.gradle file, then your set to go.
 ```Gradle
-compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.2'
+compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.3'
 ```
 #More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Video-Player/wiki).
 
