@@ -19,6 +19,11 @@
 <img src="https://github.com/UrbanChrisy/Exposure-Video-Player/blob/master/screenshots/screenshot_2.png" height="640px" width="360px"> </p>
 
 #Whats New:
+##Version 1.0.4
+###-Fullscreen not can be rotated.
+###-Thumbnail Image can now be scaled and change with ImageView matrix. Plus the abiliyu to grabthe imageview for your custom additions.
+
+##Version 1.0.3
 ###-Thumbnaiul View.
 ###-Standalone Player - Has its own activity.
 ###-Fullscreen Button working.
