@@ -20,8 +20,8 @@
 
 #Whats New:
 ##Version 1.0.4
-###-Fullscreen not can be rotated.
-###-Thumbnail Image can now be scaled and change with ImageView matrix. Plus the abiliyu to grabthe imageview for your custom additions.
+###-Fullscreen can now be rotated.
+###-Thumbnail Image can now be scaled and changed with ImageView matrix. Plus the abiliy to grab the imageview from the view.
 
 ##Version 1.0.3
 ###-Thumbnaiul View.
