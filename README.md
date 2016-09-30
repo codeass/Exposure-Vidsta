@@ -45,7 +45,7 @@
 #Module Dependency
 ####Add the following dependancy to your module build.gradle file, then your set to go.
 ```Gradle
-compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.3'
+compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.4'
 ```
 #More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Video-Player/wiki).
 
@@ -87,7 +87,7 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.3'
     }
 }
 ```
-###NOTE: In your code you must include the init(<YOUR ACTIVITY>) method, for the video player will not function correctly.
+###NOTE: In your code you must include the init(<YOUR ACTIVITY>) method, for the video player to function correctly.
 
 #Thumbnail View Setup
 ```XML
