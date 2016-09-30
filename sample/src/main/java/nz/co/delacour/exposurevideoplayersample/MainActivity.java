@@ -1,5 +1,6 @@
 package nz.co.delacour.exposurevideoplayersample;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,14 +29,56 @@ public class MainActivity extends AppCompatActivity {
         // If you haven't set autoplay to true you can with start the video with one of these,
         // evp.start();
         // Or you can wait for the user to click the play button on screen.
+/*
+        evp.setFullScreen();//Enters fullscreen.
 
+        evp.exitFullScreen();//Exits fullscreen. In 1.0.2 the method is set to private so it currently does not work.
 
+        evp.isFullScreen();//Checks to see if layout is fullscreen or not.
+
+        evp.isAutoPlayEnabled();//Checks to see if the autoplay setting is enabled. Default = true.
+
+        evp.setAutoLoop(true);//Sets the autoloop setting. Default = false.
+
+        evp.setAutoPlay(true);//Sets the autoloop setting. Default = true.
+
+        evp.setVideoSource("<LINK TO RAW RESOURCE OR WEB LINK WITH VIDEO>");//Sets video source. This is just like below, but does the Uri.parse("link") for you.
+
+        evp.setVideoSource(Uri.parse("<LINK TO RAW RESOURCE OR WEB LINK WITH VIDEO>"));//Sets video source.
+
+        evp.setOnFullScreenClickListener(this or new <LISTENER HERE>);//Sets the onFullScreenClickListener.
+
+        evp.setOnLayoutCreatedListener(this or new <LISTENER HERE>);//Sets the OnLayoutCreatedListener.
+
+        evp.setOnLayoutPauseListener(this or new <LISTENER HERE>);//Sets the OnLayoutPauseListener.
+
+        evp.setOnLayoutResumedListener(this or new <LISTENER HERE>);//Sets the OnLayoutResumedListener.
+
+        evp.setOnLayoutDestroyedListener(this or new <LISTENER HERE>);//Sets the OnLayoutDestroyedListener.
+
+        evp.setOnVideoStartedListener(this or new <LISTENER HERE>);//Sets the OnVideoStartedListener.
+
+        evp.setOnVideoPausedListener(this or new <LISTENER HERE>);//Sets the OnVideoPausedListener.
+
+        evp.setOnVideoStoppedListener(this or new <LISTENER HERE>);//Sets the OnVideoStoppedListener.
+
+        evp.setOnVideoRestartListener(this or new <LISTENER HERE>);//Sets the OnVideoRestartListener.
+
+        evp.setOnVideoFinishedListener(this or new <LISTENER HERE>);//Sets the OnVideoFinishedListener.
+
+        evp.setOnVideoErrorListener(this or new <LISTENER HERE>);//Sets the OnVideoErrorListener.
+
+        evp.setOnVideoBufferingListener(this or new <LISTENER HERE>);//Sets the OnVideoBufferingListener.
+
+*/
         // If you want to use just the thumbnail which uses the first frame of the video as an place holder thumbnail image.
         etv = (ExposureThumbnailView) findViewById(R.id.etv);
         etv.setVideoSource(videoSource);
         etv.setAutoPlay(true);
-        etv.setFullScreen(false);
-        etv.disableStandalonePlayer(true);
+        etv.setFullScreen(true);
+        etv.setAllowCache(true);
+        //etv.center();
+
         etv.setOnThumbnailClickListener(new OnThumbnailClickListener() {
             @Override
             public void onClick() {

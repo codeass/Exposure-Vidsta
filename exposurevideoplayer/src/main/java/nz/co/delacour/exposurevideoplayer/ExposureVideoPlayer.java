@@ -468,7 +468,7 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
     }
 
 
-    private void exitFullScreen() {
+    public void exitFullScreen() {
         this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
         imgBtnFullScreenToggle.setImageDrawable(enterFullScreenDrawable);
         if (baseAct != null) {
@@ -595,9 +595,9 @@ public class ExposureVideoPlayer extends FrameLayout implements TextureView.Surf
     public void onLayoutResumed() {
         if (onLayoutResumed != null) onLayoutResumed.onResume();
         if (isSetFullScreen) {
-            if (baseAct != null)
-                if (baseAct.getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-                    baseAct.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            //if (baseAct != null)
+            //    if (baseAct.getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+            //        baseAct.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             this.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
             this.getResources().getConfiguration().orientation = Configuration.ORIENTATION_LANDSCAPE;
         }

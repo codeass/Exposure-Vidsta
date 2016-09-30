@@ -17,7 +17,7 @@
         android:fontFamily="sans-serif"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/text_size_small"
-        tools:ignore="UnusedAttribute"
+        tools:ignore="RtlHardcoded,UnusedAttribute"
         tools:text="00:00" />
 
     <SeekBar
@@ -30,7 +30,8 @@
         android:layout_toEndOf="@+id/textViewPosition"
         android:layout_toLeftOf="@+id/textViewDuration"
         android:layout_toRightOf="@+id/textViewPosition"
-        android:layout_toStartOf="@+id/textViewDuration" />
+        android:layout_toStartOf="@+id/textViewDuration"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/textViewDuration"
@@ -52,7 +53,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="6dp"
-        android:background="?selectableItemBackground"
         android:src="@drawable/video_screen_fullscreen_enter"
         tools:ignore="ContentDescription" />
 </RelativeLayout>

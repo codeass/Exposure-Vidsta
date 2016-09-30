@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.support.v4.content.ContextCompat;
@@ -47,7 +48,6 @@ public class ExposureThumbnailView extends FrameLayout implements View.OnClickLi
     private FileInputStream bitmapFileIn;
     private boolean isClicked = false;
 
-
     public ExposureThumbnailView(Context context) {
         super(context);
         init(context, null);
@@ -70,9 +70,9 @@ public class ExposureThumbnailView extends FrameLayout implements View.OnClickLi
                 String s = customAttr.getString(R.styleable.ExposureVideoPlayer_videoSource);
                 if (s != null && !s.trim().isEmpty()) videoSource = s;
                 allowCache = customAttr.getBoolean(R.styleable.ExposureThumbnailView_allowCache, true);
-                setFullScreen = customAttr.getBoolean(R.styleable.ExposureThumbnailView_allowCache, true);
-                autoPlay = customAttr.getBoolean(R.styleable.ExposureThumbnailView_allowCache, true);
-                disableStandalone = customAttr.getBoolean(R.styleable.ExposureThumbnailView_allowCache, false);
+                //setFullScreen = customAttr.getBoolean(R.styleable.ExposureThumbnailView_allowCache, true);
+                //autoPlay = customAttr.getBoolean(R.styleable.ExposureThumbnailView_allowCache, true);
+                //disableStandalone = customAttr.getBoolean(R.styleable.ExposureThumbnailView_allowCache, false);
             } finally {
                 customAttr.recycle();
             }
@@ -143,7 +143,43 @@ public class ExposureThumbnailView extends FrameLayout implements View.OnClickLi
         }
     }
 
-    public Bitmap getBitmapImage(String videoSource) {
+    public void centerCrop() {
+        setThumbnailImageScaleType(ImageView.ScaleType.CENTER_CROP);
+    }
+
+    public void centerInside() {
+        setThumbnailImageScaleType(ImageView.ScaleType.CENTER_INSIDE);
+    }
+
+    public void fitCenter() {
+        setThumbnailImageScaleType(ImageView.ScaleType.FIT_CENTER);
+    }
+
+    public void setThumbnailImageScaleType(ImageView.ScaleType st) {
+        if (imgV != null)
+            imgV.setScaleType(st);
+    }
+
+    public void setThumbnailImageMatrix(Matrix matrix) {
+        if (imgV != null)
+            imgV.setImageMatrix(matrix);
+    }
+
+    public ImageView getThumbnailImageView() {
+        if (imgV != null)
+            return imgV;
+        else return null;
+    }
+
+
+
+    public Drawable getDrawable() {
+        if (imgV.getDrawable() != null)
+            return imgV.getDrawable();
+        else return null;
+    }
+
+    private Bitmap getBitmapImage(String videoSource) {
         if (videoSource == null) return null;
         Bitmap bitmap = null;
         try {

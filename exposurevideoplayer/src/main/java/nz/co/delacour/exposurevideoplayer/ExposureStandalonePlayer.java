@@ -2,6 +2,9 @@ package nz.co.delacour.exposurevideoplayer;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 /**
  * Created by Chris on 17-Sep-16.
