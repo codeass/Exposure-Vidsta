@@ -19,6 +19,10 @@
 <img src="https://github.com/UrbanChrisy/Exposure-Video-Player/blob/master/screenshots/screenshot_2.png" height="640px" width="360px"> </p>
 
 #Whats New:
+
+##Version 1.0.5
+###-Fixed constraint layout error as I was including it in the gradle but I wasnt using it.
+
 ##Version 1.0.4
 ###-Fullscreen can now be rotated.
 ###-Thumbnail Image can now be scaled and changed with ImageView matrix. Plus the abiliy to grab the imageview from the view.
