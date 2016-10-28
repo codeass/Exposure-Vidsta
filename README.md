@@ -49,7 +49,7 @@
 #Module Dependency
 ####Add the following dependancy to your module build.gradle file, then your set to go.
 ```Gradle
-compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.4'
+compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.5'
 ```
 #More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Video-Player/wiki).
 
