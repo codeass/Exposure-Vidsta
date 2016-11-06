@@ -1,5 +1,5 @@
 ###Donate Here: [![Stories in Ready](https://button.flattr.com/flattr-badge-large.png)](https://flattr.com/profile/De-La-Cour)
-[![Bintray](https://api.bintray.com/packages/delacour/maven/exposurevidsta/images/download.svg)](https://bintray.com/delacour/maven/exposurevidsta/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/delacour/maven/ExposureVidsta/images/download.svg) ](https://bintray.com/delacour/maven/ExposureVidsta/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Exposure--Video--Player-green.svg?style=true)](https://android-arsenal.com/details/1/4345)
 [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/exposure-core)
 [![Stories in Ready](https://badge.waffle.io/UrbanChrisy/Exposure-Video-Player.png?label=ready&title=Ready)](http://waffle.io/UrbanChrisy/Exposure-Video-Player)
@@ -19,7 +19,11 @@
 <img src="https://github.com/UrbanChrisy/Exposure-Video-Player/blob/master/screenshots/screenshot_2.png" height="640px" width="360px"> </p>
 
 #Whats New:
+#New Name
+##Renamed the library to Exposure Vidsta. While doing so I have reset version control back to v1.0.0.
+##Keep in mind the old gradle link will still work I am not going to get rid of it. But its version will stay the same.
 
+#Old Name
 ##Version 1.0.5
 ###-Fixed constraint layout error as I was including it in the gradle but I wasnt using it.
 
