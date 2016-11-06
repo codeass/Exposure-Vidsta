@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ExposureVideoPlayer.iml" filepath="$PROJECT_DIR$/ExposureVideoPlayer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/exposurevideoplayer/exposurevideoplayer.iml" filepath="$PROJECT_DIR$/exposurevideoplayer/exposurevideoplayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Exposure-Vidsta.iml" filepath="$PROJECT_DIR$/Exposure-Vidsta.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exposurevidsta/exposurevidsta.iml" filepath="$PROJECT_DIR$/exposurevidsta/exposurevidsta.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>
   </component>

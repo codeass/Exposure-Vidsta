@@ -1,1 +1,1 @@
-include ':exposurevideoplayer', ':sample'
+include ':exposurevidsta', ':sample'
