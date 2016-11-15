@@ -56,7 +56,7 @@
 ### Firstly Add this to your layout
 
 ```XML
-<nz.co.delacour.exposurevideoplayer.ExposureVideoPlayer
+<nz.co.delacour.exposurevidsta.Vidsta
     android:id="@+id/evp"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
