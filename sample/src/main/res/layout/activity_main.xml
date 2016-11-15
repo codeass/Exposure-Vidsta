@@ -4,11 +4,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <nz.co.delacour.exposurevideoplayer.ExposureThumbnailView
+    <nz.co.delacour.exposurevidsta.VidstaThumbnailView
         android:id="@+id/etv"
         android:layout_width="match_parent"
         app:allowCache="true"
         android:layout_height="wrap_content" />
+    
+    <nz.co.delacour.exposurevidsta.Vidsta
+        android:layout_width=""
+        android:layout_height=""
 
     <!--<nz.co.delacour.exposurevideoplayer.ExposureVideoPlayer
         android:layout_width="match_parent"

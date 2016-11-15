@@ -1,25 +1,24 @@
 package nz.co.delacour.exposurevideoplayersample;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import nz.co.delacour.exposurevideoplayer.ExposureThumbnailView;
-import nz.co.delacour.exposurevideoplayer.ExposureVideoPlayer;
-import nz.co.delacour.exposurevideoplayer.OnThumbnailClickListener;
+import nz.co.delacour.exposurevidsta.Vidsta;
+import nz.co.delacour.exposurevidsta.VidstaThumbnailView;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    ExposureVideoPlayer evp;
-    ExposureThumbnailView etv;
+    Vidsta evp;
+    VidstaThumbnailView etv;
     String videoSource = "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //evp = (ExposureVideoPlayer) findViewById(R.id.evp);
+        //evp = (Vidsta) findViewById(R.id.evp);
         //evp.init(this);
         // This allows for a better fullscreen setting, If you don't have this when the user clicks the notification bar it pops out of fullscreen.
         // This will be fixed later but currently its going to stay like this.
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 */
         // If you want to use just the thumbnail which uses the first frame of the video as an place holder thumbnail image.
-        etv = (ExposureThumbnailView) findViewById(R.id.etv);
+        etv = (VidstaThumbnailView) findViewById(R.id.etv);
         etv.setVideoSource(videoSource);
         etv.setAutoPlay(true);
         etv.setFullScreen(true);
