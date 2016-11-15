@@ -1,8 +1,6 @@
 ###Donate Here: [![Stories in Ready](https://button.flattr.com/flattr-badge-large.png)](https://flattr.com/profile/De-La-Cour)
-[ ![Download](https://api.bintray.com/packages/delacour/maven/ExposureVidsta/images/download.svg) ](https://bintray.com/delacour/maven/ExposureVidsta/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Exposure--Video--Player-green.svg?style=true)](https://android-arsenal.com/details/1/4345)
 [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/exposure-core)
-[![Stories in Ready](https://badge.waffle.io/UrbanChrisy/Exposure-Video-Player.png?label=ready&title=Ready)](http://waffle.io/UrbanChrisy/Exposure-Video-Player)
 
 <a href='https://bintray.com/delacour/maven/exposurevideoplayer?source=watch' alt='Get automatic notifications about new "exposurevideoplayer" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a>
 
@@ -10,7 +8,7 @@
 ####So if you find any bugs or things that dont work the way they should please report them, 
 ####Thank you.
 
-# Exposure-Video-Player
+# Exposure Vidsta
 ####Custom Android video player API library. Simple and integrate with your apps quickly and efficiently.
 
 
@@ -50,7 +48,7 @@
 
 #Min SDK Version: SDK < 14
 
-#More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Video-Player/wiki).
+#More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Vidsta/wiki).
 
 #Video Player Setup
 ### Firstly Add this to your layout
