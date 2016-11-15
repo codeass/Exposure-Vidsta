@@ -1,5 +1,5 @@
 ###Donate Here: [![Stories in Ready](https://button.flattr.com/flattr-badge-large.png)](https://flattr.com/profile/De-La-Cour)
-[![Bintray](https://api.bintray.com/packages/delacour/maven/exposurevidsta/images/download.svg)](https://bintray.com/delacour/maven/exposurevidsta/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/delacour/maven/ExposureVidsta/images/download.svg) ](https://bintray.com/delacour/maven/ExposureVidsta/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Exposure--Video--Player-green.svg?style=true)](https://android-arsenal.com/details/1/4345)
 [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/exposure-core)
 [![Stories in Ready](https://badge.waffle.io/UrbanChrisy/Exposure-Video-Player.png?label=ready&title=Ready)](http://waffle.io/UrbanChrisy/Exposure-Video-Player)
@@ -19,7 +19,12 @@
 <img src="https://github.com/UrbanChrisy/Exposure-Video-Player/blob/master/screenshots/screenshot_2.png" height="640px" width="360px"> </p>
 
 #Whats New:
+#New Name
+##Renamed the library to Exposure Vidsta. While doing so I have reset version control back to v1.0.0.
+##Keep in mind the old gradle link will still work I am not going to get rid of it. But its version will stay the same.
+##But new versions will use new naming.
 
+#Old Name
 ##Version 1.0.5
 ###-Fixed constraint layout error as I was including it in the gradle but I wasnt using it.
 
@@ -45,19 +50,13 @@
 
 #Min SDK Version: SDK < 14
 
-
-#Module Dependency
-####Add the following dependancy to your module build.gradle file, then your set to go.
-```Gradle
-compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.5'
-```
 #More detailed Wiki found [here](https://github.com/UrbanChrisy/Exposure-Video-Player/wiki).
 
 #Video Player Setup
 ### Firstly Add this to your layout
 
 ```XML
-<nz.co.delacour.exposurevideoplayer.ExposureVideoPlayer
+<nz.co.delacour.exposurevidsta.Vidsta
     android:id="@+id/evp"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
@@ -73,19 +72,19 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.5'
 ```Java
  public class MainActivity extends AppCompatActivity implements VideoListeners {
 
-    ExposureVideoPlayer evp;
+    Vidsta vid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        evp = (ExposureVideoPlayer) findViewById(R.id.evp);
-        evp.init(this);//You must include a Activity here, for the video player will not function correctly.
-        evp.setVideoSource(videoSource);
-        // Set video source from raw source, evp.setVideoSource("android.resource://" + getPackageName() + "/"+R.raw.big_buck_bunny);
-        evp.setOnVideoListeners(this);
+        vid = (Vidsta) findViewById(R.id.evp);
+        vid.init(this);//You must include a Activity here, for the video player will not function correctly.
+        vid.setVideoSource(videoSource);
+        // Set video source from raw source, vid.setVideoSource("android.resource://" + getPackageName() + "/"+R.raw.big_buck_bunny);
+        vid.setOnVideoListeners(this);
         // If you haven't set autoplay to true you can with start the video with one of these,
-        // evp.start();
+        // vid.start();
         // Or you can wait for the user to click the play button on screen.
         ...
     }
@@ -95,7 +94,7 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.5'
 
 #Thumbnail View Setup
 ```XML
-    <nz.co.delacour.exposurevideoplayer.ExposureThumbnailView
+    <nz.co.delacour.exposurevidsta.VidstaThumbnailView
         android:id="@+id/etv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -104,17 +103,17 @@ compile 'nz.co.delacour.exposure-core:exposurevideoplayer:1.0.5'
 ###And again same as above, bit slightly different.
 
 ```Java
-    ExposureThumbnailView etv;
+    VidstaThumbnailView thumb;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             //Thumbnail view uses the first frame(first milisecond) of video given as source.
-            etv = (ExposureThumbnailView) findViewById(R.id.etv);
-            etv.setVideoSource("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
-            etv.setAutoPlay(true);//Set your video settings if you need them. They carry over the the standalone player.
-            etv.setFullScreen(false);
-            etv.disableStandalonePlayer(true);//Disables standalone player.
-            etv.setOnThumbnailClickListener(new OnThumbnailClickListener() {
+            thumb = (VidstaThumbnailView) findViewById(R.id.thumb);
+            thumb.setVideoSource("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+            thumb.setAutoPlay(true);//Set your video settings if you need them. They carry over the the standalone player.
+            thumb.setFullScreen(false);
+            thumb.disableStandalonePlayer(true);//Disables standalone player.
+            thumb.setOnThumbnailClickListener(new OnThumbnailClickListener() {
                 @Override
                 public void onClick() {
                     Log.e("Thumbnail: ", "Clicked");
